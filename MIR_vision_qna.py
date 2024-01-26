@@ -1,0 +1,83 @@
+import os
+import json
+import base64
+import pandas as pd
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from langchain.schema import HumanMessage, AIMessage, SystemMessage
+from langchain.prompts import PromptTemplate
+from langchain.prompts.chat import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+from tqdm import tqdm
+
+
+# Load the environment variables from the .env file
+load_dotenv()
+
+
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+openai_api_key=os.getenv("OPENAI_API_KEY")
+# Initialize the multi-modal Large Language Model with specific parameters
+model = ChatOpenAI(temperature=0, model="gpt-4-vision-preview", max_tokens=1024)
+
+# Importing the dataset from MIR md
+dataset = pd.read_excel('data/MIR24GPT.xlsx')
+# Take only the first 25 rows (the ones with images)
+dataset_from_25 = dataset.iloc[:25]
+
+# In col, GPT-4, save the answers from GPT-4
+PROMPT_TEMPLATE_IMG = "You are a useful bot that is especially good at analyzing medical images"
+PROMPT_TEMPLATE = """Behave like a hypotethical doctor who has to answer the following question. You have to indicate only a number 1-4 with the correct answer. Don't output anything different than 1-4 please. The question is \n:{description}
+You will first output a JSON with the detailed description of the image, based on the question. Then another key with the answer to the question from 1-4.
+keys: image, answer
+"""
+
+# Define the chat prompt templates
+system_message = SystemMessagePromptTemplate.from_template(PROMPT_TEMPLATE_IMG)
+human_message = HumanMessagePromptTemplate.from_template(PROMPT_TEMPLATE)
+
+# Iterate over the rows with indices 0-10 in the data
+for index, row in tqdm(dataset_from_25.iterrows(), total=dataset_from_25.shape[0]):
+    # Get the ground truth (GT) and the description
+    description = row[1]
+    image = encode_image(f"images/image_{index+1}.png")
+    ai_message = AIMessage(content=[
+                {"type": "text", "text": "This is the image {index}:"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{image}"
+                    },
+                },
+            ]
+        )
+
+    chat_prompt = ChatPromptTemplate.from_messages([system_message, ai_message, human_message])
+
+    # Generate the answer using the GPT-4 model
+    formatted_prompt = chat_prompt.format_messages(description=description)
+    attempts = 0
+    while attempts < 2:
+        try:
+            diagnosis = model(formatted_prompt).content  # Call the model instance directly
+            break
+        except Exception as e:
+            attempts += 1
+            print(e)
+            if attempts == 2:
+                diagnosis = "ERROR"
+
+    # Add the diagnoses to column number 6 (GPT-4)
+    loaded_json = json.loads(diagnosis[diagnosis.find('{'):diagnosis.rfind('}')+1])
+    print(loaded_json)
+    diagnosis = loaded_json['answer']
+
+    # raise Exception("STOP")
+
+    dataset.iloc[index, 5] = diagnosis
+
+# Save the diagnoses to a new XLSX file
+dataset.to_excel('data/MIR24GPT_vision_answered_v2.xlsx', index=False)
+

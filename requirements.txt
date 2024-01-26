@@ -1,0 +1,9 @@
+langchain==0.1.3
+langchain-openai
+openai
+python-dotenv
+pandas
+tqdm
+openpyxl
+matplotlib
+seaborn

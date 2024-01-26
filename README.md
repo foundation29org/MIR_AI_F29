@@ -16,16 +16,29 @@ Nuestros scripts y conjuntos de datos han producido los siguientes resultados:
 - Precisión general de GPT-4: 87.14% en 210 preguntas
 - Error general de GPT-4: 12.86% en 210 preguntas
 
+
 - Precisión de GPT-4 (sin imágenes): 90.27% en 185 preguntas sin imágenes
 - Error de GPT-4 (sin imágenes): 9.73% en 185 preguntas sin imágenes
+
 
 - Precisión de GPT-4 para imágenes (sin verlas): 64% en 25 preguntas sobre imágenes
 - Error de GPT-4 para imágenes (sin verlas): 36% en 25 preguntas sobre imágenes
 
+
 - Precisión de GPT-4 Vision: 76% en 25 preguntas sobre imágenes
 - Error de GPT-4 Vision: 24% en 25 preguntas sobre imágenes
 
-La precisión de GPT-4 por especialidad varía, con algunas especialidades alcanzando una precisión del 100%. Para más detalles, consulte los gráficos generados por nuestros scripts.
+La precisión de GPT-4 por especialidad varía, con algunas especialidades alcanzando una precisión del 100%. 
+
+Aquí adjuntamos dos gráficos, con y sin imágenes, que muestran la precisión de GPT-4 por especialidad.
+
+### Gráficos de Precisión de GPT-4
+
+![Gráfico de Precisión de GPT-4](data/gpt4_accuracy_by_specialty.png)
+
+### Gráficos de Precisión de GPT-4 con imágenes
+
+![Gráfico de Precisión de GPT-4 con imágenes](data/complete_gpt4_accuracy_by_specialty.png)
 
 ## Empezando
 

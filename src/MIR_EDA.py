@@ -62,8 +62,8 @@ category_accuracy = dataset_from_25.groupby('Especialidad').apply(
 # Convert accuracy to percentage
 category_accuracy_percentage = category_accuracy * 100
 
-# Create a color palette suitable for a research paper
-colors = sns.color_palette('bright', len(category_accuracy))
+# Create a reversed color palette suitable for a research paper
+colors = sns.color_palette('rocket_r', len(category_accuracy))[::-1]
 
 fig, ax = plt.subplots(figsize=(12, 8), dpi=300)
 category_accuracy_percentage.sort_values(ascending=False).plot(kind='bar', ax=ax, color=colors)
@@ -135,7 +135,7 @@ category_accuracy = dataset_merged.groupby('Especialidad').apply(
 category_accuracy_percentage = category_accuracy * 100
 
 # Create a color palette
-colors = sns.color_palette('bright', len(category_accuracy_percentage))
+colors = sns.color_palette('rocket_r', len(category_accuracy_percentage))[::-1]
 
 fig, ax = plt.subplots(figsize=(12, 8), dpi=300)
 category_accuracy_percentage.sort_values(ascending=False).plot(kind='bar', ax=ax, color=colors)

@@ -11,6 +11,8 @@ Bienvenido a nuestro repositorio dedicado al Examen MIR. Esta colección contien
 
 ## Resultados
 
+### Examen MIR 2024 - Resultados con GPT-4
+
 Nuestros scripts y conjuntos de datos han producido los siguientes resultados:
 
 - Precisión general de GPT-4: 87.14% en 210 preguntas
@@ -32,13 +34,34 @@ La precisión de GPT-4 por especialidad varía, con algunas especialidades alcan
 
 Aquí adjuntamos dos gráficos, con y sin imágenes, que muestran la precisión de GPT-4 por especialidad.
 
-### Gráficos de Precisión de GPT-4
+### Gráficos de Precisión de GPT-4 (2024)
 
 ![Gráfico de Precisión de GPT-4](data/gpt4_accuracy_by_specialty.png)
 
-### Gráficos de Precisión de GPT-4 con imágenes
+### Gráficos de Precisión de GPT-4 con imágenes (2024)
 
 ![Gráfico de Precisión de GPT-4 con imágenes](data/complete_gpt4_accuracy_by_specialty.png)
+
+
+### Examen MIR 2025 - Resultados con o1 Pro
+
+Para el examen MIR 2025, utilizamos distintos modelos y por ejemplo para el caso de o1 Pro obtuvimos los siguientes resultados generales:
+
+- Aciertos: 183
+- Fallos: 17
+- En blanco: 0
+- Aciertos netos: 177,33
+- Puntuación total: 112,24
+
+#### Precisión de o1 Pro por especialidad (2025)
+
+![Gráfico de Precisión de o1 Pro (2025)](data/especialidad_2025.png)
+
+### Comparativa de modelos de IA en el MIR 2025
+
+Realizamos una comparativa entre diferentes modelos de IA para evaluar su rendimiento en las 200 preguntas del examen MIR 2025. Los resultados muestran que los modelos más avanzados como o3 (94,3%) y o1 (92,9%) obtuvieron las tasas de acierto más altas, seguidos por o1 Pro (91,9%) y Claude 3.5 Sonnet (88,6%). Esta comparativa demuestra el potencial de los modelos multimodales de última generación para asistir en la preparación y evaluación de exámenes médicos.
+
+![Tasa de acierto en las 200 preguntas del MIR 2025](data/MIR_2025.jpeg)
 
 ## Empezando
 

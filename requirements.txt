@@ -9,3 +9,4 @@ openpyxl
 matplotlib
 seaborn
 anthropic
+langchain-google-genai

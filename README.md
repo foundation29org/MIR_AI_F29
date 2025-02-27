@@ -63,6 +63,22 @@ Realizamos una comparativa entre diferentes modelos de IA para evaluar su rendim
 
 ![Tasa de acierto en las 200 preguntas del MIR 2025](data/MIR_2025.jpeg)
 
+### Análisis de concurrencia entre modelos
+
+Para profundizar en nuestro análisis, creamos un heatmap de concurrencia con dendrograma que muestra la similitud en las respuestas entre los diferentes modelos evaluados. Los valores más altos (en rojo) indican mayor coincidencia en las respuestas, mientras que los valores más bajos (en azul) indican mayor divergencia.
+
+![Heatmap de concurrencia entre modelos](data/concurrencia_modelos_2025.png)
+
+Este análisis revela patrones interesantes:
+
+- Los modelos de OpenAI (o1 Pro y o1) muestran alta concordancia entre sí (0.93/0.82), formando un grupo claramente diferenciado
+- GPT-4o muestra una baja correlación con o1 Pro y o1 (aproximadamente 0.20), lo que sugiere un enfoque diferente para resolver las preguntas
+- Claude 3.5 Sonnet tiene mayor concordancia con GPT-4o (0.75) que con los modelos más nuevos de OpenAI
+- Gemini 2 Flash Thinking tiene correlaciones moderadas con Claude 3.5 Sonnet (0.56) y GPT-4o (0.70)
+
+Esta diversidad en las respuestas sugiere que diferentes modelos tienen distintas "fortalezas" y enfoques para resolver problemas médicos, lo que podría ser útil para crear sistemas de consenso que aprovechen las ventajas de cada modelo.
+
+
 ### Evolución de los modelos: Comparativa 2024 vs 2025
 
 Al comparar los resultados obtenidos en los exámenes MIR de 2024 y 2025, observamos una mejora significativa en el rendimiento de los modelos de IA, especialmente en preguntas basadas en imágenes:

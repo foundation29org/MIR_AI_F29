@@ -63,6 +63,22 @@ Realizamos una comparativa entre diferentes modelos de IA para evaluar su rendim
 
 ![Tasa de acierto en las 200 preguntas del MIR 2025](data/MIR_2025.jpeg)
 
+### Evolución de los modelos: Comparativa 2024 vs 2025
+
+Al comparar los resultados obtenidos en los exámenes MIR de 2024 y 2025, observamos una mejora significativa en el rendimiento de los modelos de IA, especialmente en preguntas basadas en imágenes:
+
+#### Mejora en preguntas con imágenes:
+- **MIR 2024**: GPT-4 Vision logró una precisión del 76% en preguntas con imágenes
+- **MIR 2025**: o1 Pro alcanzó una precisión del 92% en preguntas con imágenes (acertando 23 de 25)
+
+Esta evolución demuestra el rápido avance de los modelos multimodales en apenas un año. Los modelos de 2025 muestran una capacidad notablemente superior para interpretar y analizar imágenes médicas, reduciendo significativamente la brecha entre su rendimiento en preguntas textuales y visuales.
+
+La comparativa general también muestra un progreso en la precisión total:
+- **MIR 2024**: GPT-4 logró una precisión general del 87,14%
+- **MIR 2025**: Los mejores modelos (o3, o1) superaron el 92% de precisión
+
+Estos resultados sugieren que los modelos de IA están alcanzando niveles cercanos al rendimiento profesional en pruebas médicas estandarizadas, lo que abre nuevas posibilidades para su uso como herramientas de apoyo en la educación y práctica médica.
+
 ## Empezando
 
 Para empezar a utilizar estos scripts y conjuntos de datos, asegúrate de tener instalados los siguientes requisitos previos:

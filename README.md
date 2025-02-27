@@ -77,7 +77,7 @@ La comparativa general también muestra un progreso en la precisión total:
 - **MIR 2024**: GPT-4 logró una precisión general del 87,14%
 - **MIR 2025**: Los mejores modelos (o3, o1) superaron el 92% de precisión
 
-Estos resultados sugieren que los modelos de IA están alcanzando niveles cercanos al rendimiento profesional en pruebas médicas estandarizadas, lo que abre nuevas posibilidades para su uso como herramientas de apoyo en la educación y práctica médica.
+Estos resultados sugieren que los modelos de IA están alcanzando niveles cercanos a la excelencia en pruebas médicas estandarizadas, lo que abre nuevas posibilidades para su uso como herramientas de apoyo en la educación y práctica médica.
 
 ## Empezando
 

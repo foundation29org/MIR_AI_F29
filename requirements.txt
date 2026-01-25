@@ -10,3 +10,5 @@ matplotlib
 seaborn
 anthropic
 langchain-google-genai
+pymupdf
+google-generativeai

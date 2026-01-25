@@ -1,0 +1,38 @@
+{
+  "name": "mir-ai-evaluation",
+  "version": "2.0.0",
+  "description": "Evaluación de modelos de IA en el examen MIR español",
+  "main": "src/MIR_qna_multimodel.js",
+  "scripts": {
+    "test:gpt5mini": "node src/MIR_qna_multimodel.js gpt5mini",
+    "test:o3": "node src/MIR_qna_multimodel.js o3",
+    "test:claude4sonnet": "node src/MIR_qna_multimodel.js claude4sonnet",
+    "test:claude45sonnet": "node src/MIR_qna_multimodel.js claude45sonnet",
+    "test:claude35sonnet": "node src/MIR_qna_multimodel.js claude35sonnet",
+    "test:gemini3pro": "node src/MIR_qna_multimodel.js gemini3pro",
+    "test:gemini3flash": "node src/MIR_qna_multimodel.js gemini3flash",
+    "test:gemini25pro": "node src/MIR_qna_multimodel.js gemini25pro",
+    "test:gemini25flash": "node src/MIR_qna_multimodel.js gemini25flash",
+    "test:all": "npm run test:gpt5mini && npm run test:gemini3pro && npm run test:claude45sonnet"
+  },
+  "keywords": [
+    "mir",
+    "ai",
+    "medical",
+    "evaluation",
+    "langchain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@aws-sdk/client-bedrock-runtime": "^3.975.0",
+    "@google/genai": "^1.38.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/google-genai": "^0.1.0",
+    "@langchain/openai": "^0.3.0",
+    "dotenv": "^16.4.0",
+    "openai": "^6.16.0",
+    "xlsx": "^0.18.5"
+  }
+}

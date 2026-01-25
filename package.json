@@ -13,7 +13,8 @@
     "test:gemini3flash": "node src/MIR_qna_multimodel.js gemini3flash",
     "test:gemini25pro": "node src/MIR_qna_multimodel.js gemini25pro",
     "test:gemini25flash": "node src/MIR_qna_multimodel.js gemini25flash",
-    "test:all": "npm run test:gpt5mini && npm run test:gemini3pro && npm run test:claude45sonnet"
+    "test:all": "npm run test:gpt5mini && npm run test:gemini3pro && npm run test:claude45sonnet",
+    "compare": "node src/compare_results.js"
   },
   "keywords": [
     "mir",

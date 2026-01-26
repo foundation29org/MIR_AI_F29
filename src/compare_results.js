@@ -1,8 +1,10 @@
 /**
  * Script para comparar resultados de los modelos con las respuestas oficiales
+ * Los resultados se guardan en results/mir26.md (NO modifica el Excel)
  */
 
 const xlsx = require('xlsx');
+const fs = require('fs');
 const path = require('path');
 
 function main() {
@@ -35,27 +37,33 @@ function main() {
   const answerColumns = Object.keys(data[0] || {}).filter(col => col.startsWith('answer_'));
   console.log(`🤖 Modelos encontrados: ${answerColumns.map(c => c.replace('answer_', '')).join(', ')}\n`);
 
-  // Contar aciertos por modelo
+  // Contar aciertos por modelo (total y separado por con/sin imagen)
   const stats = {};
   answerColumns.forEach(col => {
-    stats[col] = { total: 0, correct: 0, errors: 0 };
+    stats[col] = { 
+      total: 0, correct: 0, errors: 0,
+      withImage: { total: 0, correct: 0 },
+      withoutImage: { total: 0, correct: 0 }
+    };
   });
 
-  // Añadir columna de respuesta correcta y comparar
+  // Comparar respuestas
   for (let i = 0; i < data.length; i++) {
     const qnum = String(data[i].qnum || (i + 1));
     const correctAnswer = correctas[qnum];
-    
-    // Añadir respuesta correcta
-    data[i]['correct_answer'] = correctAnswer || 'N/A';
+    const hasImage = data[i].image_refs && data[i].image_refs !== '';
 
     // Comparar cada modelo
     answerColumns.forEach(col => {
       const modelAnswer = String(data[i][col] || '');
       if (modelAnswer && modelAnswer !== 'ERROR' && modelAnswer !== '') {
         stats[col].total++;
+        const imageCategory = hasImage ? 'withImage' : 'withoutImage';
+        stats[col][imageCategory].total++;
+        
         if (modelAnswer === correctAnswer) {
           stats[col].correct++;
+          stats[col][imageCategory].correct++;
         }
       } else if (modelAnswer === 'ERROR') {
         stats[col].errors++;
@@ -63,39 +71,51 @@ function main() {
     });
   }
 
-  // Mostrar resultados
-  console.log('='.repeat(70));
-  console.log('📊 RESULTADOS POR MODELO');
-  console.log('='.repeat(70));
-  console.log('');
-  console.log('Modelo'.padEnd(25) + 'Aciertos'.padEnd(12) + 'Total'.padEnd(10) + '% Acierto'.padEnd(12) + 'Errores');
-  console.log('-'.repeat(70));
+  // Construir output para consola y archivo
+  let output = '';
+  
+  output += `# MIR 2026 - Resultados de Evaluación\n\n`;
+  output += `Fecha: ${new Date().toLocaleString('es-ES')}\n\n`;
+
+  output += '## Resultados por Modelo\n\n';
+  output += '| Modelo | Aciertos | Total | % Acierto | Errores |\n';
+  output += '|--------|----------|-------|-----------|--------|\n';
 
   const results = [];
   answerColumns.forEach(col => {
     const modelName = col.replace('answer_', '');
     const s = stats[col];
     const percentage = s.total > 0 ? ((s.correct / s.total) * 100).toFixed(2) : '0.00';
-    console.log(
-      modelName.padEnd(25) + 
-      String(s.correct).padEnd(12) + 
-      String(s.total).padEnd(10) + 
-      (percentage + '%').padEnd(12) +
-      String(s.errors)
-    );
+    output += `| ${modelName} | ${s.correct} | ${s.total} | ${percentage}% | ${s.errors} |\n`;
     results.push({ model: modelName, correct: s.correct, total: s.total, percentage: parseFloat(percentage), errors: s.errors });
   });
 
-  console.log('-'.repeat(70));
-  console.log('');
+  output += '\n';
 
   // Ordenar por porcentaje de aciertos
   results.sort((a, b) => b.percentage - a.percentage);
-  console.log('🏆 RANKING:');
+  output += '## Ranking\n\n';
   results.forEach((r, i) => {
-    console.log(`   ${i + 1}. ${r.model}: ${r.percentage}% (${r.correct}/${r.total})`);
+    output += `${i + 1}. **${r.model}**: ${r.percentage}% (${r.correct}/${r.total})\n`;
   });
-  console.log('');
+  output += '\n';
+
+  // Desglose por tipo (con/sin imagen)
+  output += '## Desglose por Tipo de Pregunta\n\n';
+  output += '| Modelo | Con Imagen | Sin Imagen |\n';
+  output += '|--------|------------|------------|\n';
+  
+  answerColumns.forEach(col => {
+    const modelName = col.replace('answer_', '');
+    const s = stats[col];
+    const withImg = s.withImage;
+    const withoutImg = s.withoutImage;
+    const withImgPct = withImg.total > 0 ? ((withImg.correct / withImg.total) * 100).toFixed(1) : '0.0';
+    const withoutImgPct = withoutImg.total > 0 ? ((withoutImg.correct / withoutImg.total) * 100).toFixed(1) : '0.0';
+    
+    output += `| ${modelName} | ${withImg.correct}/${withImg.total} (${withImgPct}%) | ${withoutImg.correct}/${withoutImg.total} (${withoutImgPct}%) |\n`;
+  });
+  output += '\n';
 
   // Recopilar preguntas falladas por modelo
   const failedQuestions = {};
@@ -115,7 +135,82 @@ function main() {
     });
   }
 
-  // Mostrar preguntas falladas
+  // Preguntas falladas
+  output += '## Preguntas Falladas por Modelo\n\n';
+  answerColumns.forEach(col => {
+    const modelName = col.replace('answer_', '');
+    const failed = failedQuestions[col];
+    output += `- **${modelName}** (${failed.length}): ${failed.join(', ')}\n`;
+  });
+  output += '\n';
+
+  // Preguntas falladas por todos los modelos
+  const allFailed = answerColumns.reduce((acc, col) => {
+    if (acc === null) return new Set(failedQuestions[col]);
+    return new Set([...acc].filter(q => failedQuestions[col].includes(q)));
+  }, null);
+  
+  if (allFailed && allFailed.size > 0) {
+    output += `## Preguntas Falladas por TODOS los Modelos\n\n`;
+    output += `${[...allFailed].sort((a, b) => parseInt(a) - parseInt(b)).join(', ')}\n\n`;
+  }
+
+  // Guardar en archivo markdown
+  const resultsPath = path.join(__dirname, '..', 'results', 'mir26.md');
+  fs.writeFileSync(resultsPath, output);
+
+  // Mostrar en consola (formato simplificado)
+  console.log('='.repeat(70));
+  console.log('📊 RESULTADOS POR MODELO');
+  console.log('='.repeat(70));
+  console.log('');
+  console.log('Modelo'.padEnd(25) + 'Aciertos'.padEnd(12) + 'Total'.padEnd(10) + '% Acierto'.padEnd(12) + 'Errores');
+  console.log('-'.repeat(70));
+
+  answerColumns.forEach(col => {
+    const modelName = col.replace('answer_', '');
+    const s = stats[col];
+    const percentage = s.total > 0 ? ((s.correct / s.total) * 100).toFixed(2) : '0.00';
+    console.log(
+      modelName.padEnd(25) + 
+      String(s.correct).padEnd(12) + 
+      String(s.total).padEnd(10) + 
+      (percentage + '%').padEnd(12) +
+      String(s.errors)
+    );
+  });
+
+  console.log('-'.repeat(70));
+  console.log('');
+
+  console.log('🏆 RANKING:');
+  results.forEach((r, i) => {
+    console.log(`   ${i + 1}. ${r.model}: ${r.percentage}% (${r.correct}/${r.total})`);
+  });
+  console.log('');
+
+  console.log('📊 DESGLOSE POR TIPO DE PREGUNTA:');
+  console.log('-'.repeat(70));
+  console.log('Modelo'.padEnd(20) + 'Con Imagen'.padEnd(18) + 'Sin Imagen'.padEnd(18));
+  console.log('-'.repeat(70));
+  
+  answerColumns.forEach(col => {
+    const modelName = col.replace('answer_', '');
+    const s = stats[col];
+    const withImg = s.withImage;
+    const withoutImg = s.withoutImage;
+    const withImgPct = withImg.total > 0 ? ((withImg.correct / withImg.total) * 100).toFixed(1) : '0.0';
+    const withoutImgPct = withoutImg.total > 0 ? ((withoutImg.correct / withoutImg.total) * 100).toFixed(1) : '0.0';
+    
+    console.log(
+      modelName.padEnd(20) + 
+      `${withImg.correct}/${withImg.total} (${withImgPct}%)`.padEnd(18) +
+      `${withoutImg.correct}/${withoutImg.total} (${withoutImgPct}%)`.padEnd(18)
+    );
+  });
+  console.log('-'.repeat(70));
+  console.log('');
+
   console.log('❌ PREGUNTAS FALLADAS POR MODELO:');
   answerColumns.forEach(col => {
     const modelName = col.replace('answer_', '');
@@ -124,36 +219,8 @@ function main() {
   });
   console.log('');
 
-  // Añadir filas al final con resumen de preguntas falladas
-  const emptyRow = {};
-  Object.keys(data[0]).forEach(key => emptyRow[key] = '');
-  
-  // Fila vacía separadora
-  data.push({...emptyRow});
-  
-  // Fila de encabezado
-  const headerRow = {...emptyRow};
-  headerRow.qnum = 'RESUMEN';
-  headerRow.Description = 'Preguntas falladas por modelo';
-  data.push(headerRow);
-
-  // Filas con preguntas falladas por cada modelo
-  answerColumns.forEach(col => {
-    const modelName = col.replace('answer_', '');
-    const failed = failedQuestions[col];
-    const row = {...emptyRow};
-    row.qnum = modelName;
-    row.Description = `Falladas (${failed.length}): ${failed.join(', ')}`;
-    row[col] = `${failed.length} errores`;
-    data.push(row);
-  });
-
-  // Guardar Excel actualizado
-  const newWorksheet = xlsx.utils.json_to_sheet(data);
-  workbook.Sheets[sheetName] = newWorksheet;
-  xlsx.writeFile(workbook, excelPath);
-
-  console.log(`✅ Excel actualizado con columna 'correct_answer' y resumen de fallos\n`);
+  console.log(`✅ Resultados guardados en: results/mir26.md\n`);
+  console.log(`ℹ️  El Excel NO ha sido modificado\n`);
 }
 
 main();

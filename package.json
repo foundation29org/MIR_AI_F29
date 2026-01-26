@@ -5,9 +5,11 @@
   "main": "src/MIR_qna_multimodel.js",
   "scripts": {
     "test:gpt5mini": "node src/MIR_qna_multimodel.js gpt5mini",
+    "test:gpt52": "node src/MIR_qna_multimodel.js gpt52",
     "test:o3": "node src/MIR_qna_multimodel.js o3",
     "test:claude4sonnet": "node src/MIR_qna_multimodel.js claude4sonnet",
     "test:claude45sonnet": "node src/MIR_qna_multimodel.js claude45sonnet",
+    "test:claude45opus": "node src/MIR_qna_multimodel.js claude45opus",
     "test:claude35sonnet": "node src/MIR_qna_multimodel.js claude35sonnet",
     "test:gemini3pro": "node src/MIR_qna_multimodel.js gemini3pro",
     "test:gemini3flash": "node src/MIR_qna_multimodel.js gemini3flash",

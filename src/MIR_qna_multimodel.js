@@ -30,7 +30,7 @@ const PROMPT_TEMPLATE_WITH_IMAGE = `Behave like a hypotethical doctor who has to
 
 // Definición de modelos disponibles
 const MODEL_CONFIGS = {
-  // Azure OpenAI
+  // Azure OpenAI (foundation29-ai endpoint)
   gpt5mini: {
     type: 'azure',
     model: "gpt-5-mini",
@@ -42,6 +42,13 @@ const MODEL_CONFIGS = {
     deployment: "o3",
   },
   
+  // Azure OpenAI GPT-5.2 (nav29sweden endpoint)
+  gpt52: {
+    type: 'azure-sweden',
+    model: "gpt-5.2",
+    deployment: "gpt-5.2",
+  },
+  
   // Anthropic Claude (API directa)
   claude4sonnet: {
     type: 'anthropic',
@@ -50,6 +57,10 @@ const MODEL_CONFIGS = {
   claude45sonnet: {
     type: 'anthropic',
     model: "claude-sonnet-4-5-20250929",
+  },
+  claude45opus: {
+    type: 'anthropic',
+    model: "claude-opus-4-5-20251101",
   },
   claude35sonnet: {
     type: 'anthropic',
@@ -75,7 +86,7 @@ const MODEL_CONFIGS = {
   },
 };
 
-// Crear modelo Azure OpenAI (LangChain)
+// Crear modelo Azure OpenAI (LangChain) - foundation29-ai endpoint
 function createAzureModel(deployment) {
   return new ChatOpenAI({
     modelName: deployment,
@@ -85,6 +96,23 @@ function createAzureModel(deployment) {
     azureOpenAIEndpoint: config.AZURE_OPENAI_ENDPOINT,
     azureOpenAIApiDeploymentName: deployment,
     timeout: 140000,
+  });
+}
+
+// Crear modelo Azure OpenAI Sweden (LangChain) - nav29sweden endpoint
+// GPT-5.2 con reasoning_effort: high
+function createAzureSwedenModel(deployment) {
+  return new ChatOpenAI({
+    modelName: deployment,
+    azure: true,
+    azureOpenAIApiKey: config.AZURE_GPT52_KEY,
+    azureOpenAIApiVersion: config.OPENAI_API_VERSION,
+    azureOpenAIEndpoint: config.AZURE_GPT52_ENDPOINT,
+    azureOpenAIApiDeploymentName: deployment,
+    timeout: 300000, // 5 minutos para reasoning
+    modelKwargs: {
+      reasoning_effort: "high",
+    },
   });
 }
 
@@ -191,7 +219,7 @@ async function askAnthropicModel(modelName, description, imagePath = null) {
 }
 
 // Google Gemini (SDK oficial)
-async function askGoogleModel(modelName, description, imagePath = null) {
+async function askGoogleModel(modelName, description, imagePath = null, verbose = false) {
   let prompt;
   let contents;
   
@@ -199,6 +227,11 @@ async function askGoogleModel(modelName, description, imagePath = null) {
     prompt = PROMPT_TEMPLATE_WITH_IMAGE.replace('{description}', description);
     const base64Image = encodeImage(imagePath);
     const mimeType = getImageMimeType(imagePath);
+    const imageSize = fs.statSync(imagePath).size;
+    
+    if (verbose) {
+      console.log(`   📷 Gemini imagen: ${path.basename(imagePath)}, ${mimeType}, ${(imageSize/1024).toFixed(1)}KB, base64: ${base64Image.length} chars`);
+    }
     
     contents = [
       {
@@ -229,7 +262,12 @@ async function askGoogleModel(modelName, description, imagePath = null) {
     },
   });
   
-  return extractAnswer(response.text);
+  const rawText = response.text;
+  if (verbose) {
+    console.log(`   📝 Gemini raw response: "${rawText.substring(0, 100)}..."`);
+  }
+  
+  return extractAnswer(rawText);
 }
 
 // Función para parsear las referencias de imagen del Excel
@@ -249,6 +287,7 @@ function parseImageRefs(imageRefsStr) {
 // Función principal
 async function main() {
   const modelName = process.argv[2] || 'gpt5mini';
+  const verbose = process.argv.includes('--verbose') || process.argv.includes('-v');
   
   if (!MODEL_CONFIGS[modelName]) {
     console.error(`Modelo "${modelName}" no disponible.`);
@@ -261,6 +300,7 @@ async function main() {
   // Validar credenciales según el tipo de modelo
   const requiredKeys = {
     azure: ['O_A_K_GPT5MINI'],
+    'azure-sweden': ['AZURE_GPT52_KEY'],
     google: ['GOOGLE_API_KEY'],
     anthropic: ['ANTHROPIC_API_KEY'],
   };
@@ -273,6 +313,8 @@ async function main() {
   let azureModel = null;
   if (modelConfig.type === 'azure') {
     azureModel = createAzureModel(modelConfig.deployment);
+  } else if (modelConfig.type === 'azure-sweden') {
+    azureModel = createAzureSwedenModel(modelConfig.deployment);
   }
   
   // Leer el Excel
@@ -341,13 +383,14 @@ async function main() {
       try {
         switch (modelConfig.type) {
           case 'azure':
+          case 'azure-sweden':
             result = await askAzureModel(azureModel, description, imagePath);
             break;
           case 'anthropic':
             result = await askAnthropicModel(modelConfig.model, description, imagePath);
             break;
           case 'google':
-            result = await askGoogleModel(modelConfig.model, description, imagePath);
+            result = await askGoogleModel(modelConfig.model, description, imagePath, verbose);
             break;
         }
         console.log(`   ✅ Respuesta: ${result}`);

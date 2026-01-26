@@ -79,21 +79,94 @@ Este análisis revela patrones interesantes:
 Esta diversidad en las respuestas sugiere que diferentes modelos tienen distintas "fortalezas" y enfoques para resolver problemas médicos, lo que podría ser útil para crear sistemas de consenso que aprovechen las ventajas de cada modelo.
 
 
-### Evolución de los modelos: Comparativa 2024 vs 2025
+### Examen MIR 2026 - Resultados Multimodelo
 
-Al comparar los resultados obtenidos en los exámenes MIR de 2024 y 2025, observamos una mejora significativa en el rendimiento de los modelos de IA, especialmente en preguntas basadas en imágenes:
+Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de IA de última generación, incluyendo las nuevas versiones de GPT-5, Claude 4.5, Gemini 3 y DeepSeek.
+
+#### Ranking Final MIR 2026
+
+| Posición | Modelo | Precisión |
+|----------|--------|-----------|
+| 1 | **GPT-5.2** | 97.14% |
+| 2 | **o3** | 95.71% |
+| 3 | **GPT-5-mini** | 94.76% |
+| 4 | **DeepSeek-R1** | 93.33% |
+| 5 | **Gemini 3 Pro** | 92.38% |
+| 6 | **Claude Opus 4.5** | 91.43% |
+| 7 | **Claude Sonnet 4.5** | 90.95% |
+| 8 | **DeepSeek V3.2** | 70.00% |
+
+#### Comparativa de Modelos (2026)
+
+![Comparativa de modelos MIR 2026](results/charts/models_comparison.png)
+
+#### Rendimiento en Preguntas con Imágenes vs Sin Imágenes
+
+| Modelo | Con Imagen (25) | Sin Imagen (185) |
+|--------|-----------------|------------------|
+| GPT-5.2 | 96.0% | 97.3% |
+| o3 | 92.0% | 96.2% |
+| GPT-5-mini | 92.0% | 95.1% |
+| DeepSeek-R1 | 88.0% | 94.1% |
+| Gemini 3 Pro | 64.0% | 96.2% |
+| Claude Opus 4.5 | 52.0% | 96.8% |
+| Claude Sonnet 4.5 | 60.0% | 95.1% |
+| DeepSeek V3.2 | 28.0% | 75.7% |
+
+#### Precisión por Especialidad - GPT-5.2 (Mejor modelo)
+
+![Precisión de GPT-5.2 por especialidad](results/charts/gpt52_by_specialty.png)
+
+#### Rendimiento en Preguntas con Imagen vs Sin Imagen
+
+![Comparativa con/sin imagen](results/charts/image_vs_text_comparison.png)
+
+#### Concordancia entre Modelos
+
+El heatmap muestra la proporción de respuestas coincidentes entre cada par de modelos:
+
+![Heatmap de concordancia entre modelos](results/charts/model_concordance_heatmap.png)
+
+#### Distribución de Preguntas por Especialidad
+
+![Distribución por especialidad](results/charts/specialty_distribution.png)
+
+#### Observaciones Clave del MIR 2026
+
+1. **GPT-5.2 lidera** con 97.14%, siendo el mejor tanto en preguntas con imagen (96%) como sin imagen (97.3%)
+2. **DeepSeek-R1** (modelo de razonamiento) supera a modelos más establecidos como Gemini y Claude
+3. **Gran disparidad en imágenes médicas**: GPT-5.2 (96%) vs DeepSeek V3.2 (28%)
+4. **Claude Opus 4.5** tiene excelente rendimiento en texto (96.8%) pero el peor en imágenes (52%)
+5. **3 preguntas falladas por TODOS los modelos** (3, 122, 139), posiblemente impugnables
+6. **Cardiología** es la especialidad con más preguntas (21), seguida de Digestivo (17) y Ginecología (15)
+
+---
+
+### Evolución de los modelos: Comparativa 2024 vs 2025 vs 2026
+
+Al comparar los resultados obtenidos en los exámenes MIR de 2024, 2025 y 2026, observamos una mejora continua en el rendimiento de los modelos de IA:
+
+#### Evolución de la precisión máxima:
+- **MIR 2024**: GPT-4 logró 87.14%
+- **MIR 2025**: o3 alcanzó 94.3%
+- **MIR 2026**: GPT-5.2 alcanzó **97.14%**
 
 #### Mejora en preguntas con imágenes:
 - **MIR 2024**: GPT-4 Vision logró una precisión del 76% en preguntas con imágenes
-- **MIR 2025**: o1 Pro alcanzó una precisión del 92% en preguntas con imágenes (acertando 23 de 25)
+- **MIR 2025**: o1 Pro alcanzó una precisión del 92% en preguntas con imágenes
+- **MIR 2026**: GPT-5.2 alcanzó **96%** en preguntas con imágenes
 
-Esta evolución demuestra el rápido avance de los modelos multimodales en apenas un año. Los modelos de 2025 muestran una capacidad notablemente superior para interpretar y analizar imágenes médicas, reduciendo significativamente la brecha entre su rendimiento en preguntas textuales y visuales.
+Esta evolución demuestra el rápido avance de los modelos multimodales. En solo dos años, la precisión general ha pasado del 87% al 97%, y la precisión en imágenes médicas del 76% al 96%.
 
-La comparativa general también muestra un progreso en la precisión total:
-- **MIR 2024**: GPT-4 logró una precisión general del 87,14%
-- **MIR 2025**: Los mejores modelos (o3, o1) superaron el 92% de precisión
+#### Comparativa histórica
 
-Estos resultados sugieren que los modelos de IA están alcanzando niveles cercanos a la excelencia en pruebas médicas estandarizadas, lo que abre nuevas posibilidades para su uso como herramientas de apoyo en la educación y práctica médica.
+| Año | Mejor Modelo | Precisión General | Precisión Imágenes |
+|-----|--------------|-------------------|-------------------|
+| 2024 | GPT-4 | 87.14% | 76% |
+| 2025 | o3 | 94.3% | 92% |
+| 2026 | GPT-5.2 | **97.14%** | **96%** |
+
+Estos resultados confirman que los modelos de IA están alcanzando niveles de excelencia en pruebas médicas estandarizadas, superando consistentemente el umbral del 90% que típicamente se considera "nivel experto".
 
 ## Empezando
 

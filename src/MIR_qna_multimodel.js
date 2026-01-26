@@ -13,6 +13,7 @@ const { ChatOpenAI } = require("@langchain/openai");
 const { HumanMessage } = require("@langchain/core/messages");
 const { GoogleGenAI } = require("@google/genai");
 const Anthropic = require("@anthropic-ai/sdk");
+const OpenAI = require("openai");
 const { config, validateConfig } = require('./config');
 
 // Inicializar clientes
@@ -20,6 +21,12 @@ const googleAI = new GoogleGenAI({ apiKey: config.GOOGLE_API_KEY });
 
 // Cliente de Anthropic Claude (API directa)
 const anthropicClient = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY });
+
+// Cliente de DeepSeek (via OpenAI SDK con endpoint Azure AI Services)
+const deepseekClient = new OpenAI({
+  baseURL: config.DEEPSEEK_ENDPOINT,
+  apiKey: config.O_A_K_GPT5MINI,
+});
 
 // Prompt templates
 const PROMPT_TEMPLATE = `Behave like a hypotethical doctor who has to answer the following question. You have to indicate only a number 1-4 with the correct answer. Don't output anything different than 1-4 please. The question is:
@@ -47,6 +54,20 @@ const MODEL_CONFIGS = {
     type: 'azure-sweden',
     model: "gpt-5.2",
     deployment: "gpt-5.2",
+  },
+  
+  // DeepSeek V3.2 (Azure AI Services)
+  deepseek: {
+    type: 'deepseek',
+    model: "DeepSeek-V3.2",
+    deployment: "DeepSeek-V3.2",
+  },
+  
+  // DeepSeek R1 (Azure AI Services - modelo de razonamiento)
+  deepseekr1: {
+    type: 'deepseek',
+    model: "DeepSeek-R1",
+    deployment: "DeepSeek-R1",
   },
   
   // Anthropic Claude (API directa)
@@ -270,6 +291,58 @@ async function askGoogleModel(modelName, description, imagePath = null, verbose 
   return extractAnswer(rawText);
 }
 
+// DeepSeek (OpenAI SDK - V3.2 y R1)
+async function askDeepSeekModel(modelName, description, imagePath = null) {
+  let prompt;
+  let content;
+  
+  if (imagePath && fs.existsSync(imagePath)) {
+    prompt = PROMPT_TEMPLATE_WITH_IMAGE.replace('{description}', description);
+    const base64Image = encodeImage(imagePath);
+    const mimeType = getImageMimeType(imagePath);
+    
+    content = [
+      { type: "text", text: prompt },
+      {
+        type: "image_url",
+        image_url: {
+          url: `data:${mimeType};base64,${base64Image}`,
+        },
+      },
+    ];
+  } else {
+    prompt = PROMPT_TEMPLATE.replace('{description}', description);
+    content = prompt;
+  }
+  
+  const completion = await deepseekClient.chat.completions.create({
+    model: modelName,
+    messages: [
+      { role: "user", content: content }
+    ],
+    max_tokens: 16000, // R1 necesita más tokens para reasoning
+  });
+  
+  const message = completion.choices[0].message;
+  
+  // DeepSeek-R1 puede devolver reasoning_content separado del content
+  // El content final es lo que nos interesa
+  let responseText = message.content || '';
+  
+  // Si el content está vacío pero hay reasoning_content, intentar extraer de ahí
+  if (!responseText && message.reasoning_content) {
+    responseText = message.reasoning_content;
+  }
+  
+  // Debug: mostrar qué devuelve
+  if (!responseText) {
+    console.log(`   🔍 Debug - Message keys: ${Object.keys(message).join(', ')}`);
+    console.log(`   🔍 Debug - Full message: ${JSON.stringify(message).substring(0, 200)}`);
+  }
+  
+  return extractAnswer(responseText);
+}
+
 // Función para parsear las referencias de imagen del Excel
 function parseImageRefs(imageRefsStr) {
   if (!imageRefsStr || imageRefsStr === '' || imageRefsStr === 'null' || imageRefsStr === 'undefined') {
@@ -303,6 +376,7 @@ async function main() {
     'azure-sweden': ['AZURE_GPT52_KEY'],
     google: ['GOOGLE_API_KEY'],
     anthropic: ['ANTHROPIC_API_KEY'],
+    deepseek: ['O_A_K_GPT5MINI', 'DEEPSEEK_ENDPOINT'],
   };
   validateConfig(requiredKeys[modelConfig.type]);
   
@@ -391,6 +465,9 @@ async function main() {
             break;
           case 'google':
             result = await askGoogleModel(modelConfig.model, description, imagePath, verbose);
+            break;
+          case 'deepseek':
+            result = await askDeepSeekModel(modelConfig.model, description, imagePath);
             break;
         }
         console.log(`   ✅ Respuesta: ${result}`);

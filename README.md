@@ -83,6 +83,8 @@ Esta diversidad en las respuestas sugiere que diferentes modelos tienen distinta
 
 Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de IA de última generación, incluyendo las nuevas versiones de GPT-5, Claude 4.5, Gemini 3 y DeepSeek.
 
+> 📊 **Ver resultados detallados**: [results/mir26.md](results/mir26.md) (incluye preguntas falladas por modelo, análisis por especialidad y más)
+
 #### Ranking Final MIR 2026
 
 | Posición | Modelo | Precisión |

@@ -392,7 +392,7 @@ async function main() {
   }
   
   // Leer el Excel
-  const excelPath = path.join(__dirname, '..', 'data', 'MIR26.xlsx');
+  const excelPath = path.join(__dirname, '..', 'results/26/MIR26.xlsx');
   const workbook = xlsx.readFile(excelPath);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];

@@ -66,11 +66,11 @@ def load_data():
     """Carga y combina los datos del Excel oficial con los resultados de los modelos."""
     
     # Cargar Excel oficial con especialidades
-    oficial_path = 'data/26/Excel MIR 2026.xlsx'
+    oficial_path = 'data/26/Correcion_academia.xlsx'
     df_oficial = pd.read_excel(oficial_path)
     
     # Cargar resultados de modelos
-    results_path = 'data/26/MIR26.xlsx'
+    results_path = 'results/26/MIR26.xlsx'
     df_results = pd.read_excel(results_path)
     
     print(f"Excel oficial: {len(df_oficial)} filas")
@@ -427,7 +427,7 @@ def main():
     plot_specialty_distribution(df)
     
     print("\n" + "="*60)
-    print("Análisis completado. Gráficas guardadas en results/26/charts/")
+    print("Análisis completado. Gráficas guardadas en results/charts/")
     print("="*60)
 
 if __name__ == '__main__':

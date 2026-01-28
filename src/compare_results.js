@@ -9,7 +9,7 @@ const path = require('path');
 
 function main() {
   // Leer correcciones oficiales
-  const wbCorr = xlsx.readFile(path.join(__dirname, '..', 'data', '26', 'Excel MIR 2026.xlsx'));
+  const wbCorr = xlsx.readFile(path.join(__dirname, '..', 'data/26/Correcion_academia.xlsx'));
   const sheetCorr = wbCorr.Sheets['Hoja 1'];
 
   // Extraer respuestas correctas (PREGUNTA -> RESPUESTA)
@@ -25,13 +25,13 @@ function main() {
   console.log(`\n📋 Respuestas correctas cargadas: ${Object.keys(correctas).length}`);
 
   // Leer Excel con resultados de modelos
-  const excelPath = path.join(__dirname, '..', 'data', 'MIR26.xlsx');
+  const excelPath = path.join(__dirname, '..', 'results/26/MIR26.xlsx');
   const workbook = xlsx.readFile(excelPath);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   const data = xlsx.utils.sheet_to_json(worksheet);
 
-  console.log(`📊 Preguntas en MIR26.xlsx: ${data.length}\n`);
+  console.log(`📊 Preguntas en results/26/MIR26.xlsx: ${data.length}\n`);
 
   // Identificar columnas de respuestas de modelos
   const answerColumns = Object.keys(data[0] || {}).filter(col => col.startsWith('answer_'));

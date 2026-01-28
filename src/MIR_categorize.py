@@ -21,7 +21,7 @@ model = AzureChatOpenAI(
 )
 
 # Importing the dataset from MIR md
-dataset = pd.read_excel('data/MIR24GPT.xlsx')
+dataset = pd.read_excel('data/24/MIR24GPT.xlsx')
 
 # In col, GPT-4, save the answers from GPT-4
 PROMPT_TEMPLATE = """Behave like a hypotethical doctor who has to categorize the following question. You have to indicate only a the Category from the list I give you that is most appropriate. 
@@ -78,4 +78,4 @@ for index, row in tqdm(dataset.iterrows(), total=dataset.shape[0]):
     dataset.iloc[index, 2] = diagnosis
 
 # Save the diagnoses to a new XLSX file
-dataset.to_excel('data/MIR24GPT_categorized.xlsx', index=False)
+dataset.to_excel('data/24/MIR24GPT_categorized.xlsx', index=False)

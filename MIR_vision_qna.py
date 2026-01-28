@@ -23,7 +23,7 @@ openai_api_key=os.getenv("OPENAI_API_KEY")
 model = ChatOpenAI(temperature=0, model="gpt-4-vision-preview", max_tokens=1024)
 
 # Importing the dataset from MIR md
-dataset = pd.read_excel('data/MIR24GPT.xlsx')
+dataset = pd.read_excel('data/24/MIR24GPT.xlsx')
 # Take only the first 25 rows (the ones with images)
 dataset_from_25 = dataset.iloc[:25]
 
@@ -79,5 +79,5 @@ for index, row in tqdm(dataset_from_25.iterrows(), total=dataset_from_25.shape[0
     dataset.iloc[index, 5] = diagnosis
 
 # Save the diagnoses to a new XLSX file
-dataset.to_excel('data/MIR24GPT_vision_answered_v2.xlsx', index=False)
+dataset.to_excel('data/24/MIR24GPT_vision_answered_v2.xlsx', index=False)
 

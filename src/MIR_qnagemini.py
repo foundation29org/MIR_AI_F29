@@ -37,9 +37,9 @@ model = ChatGoogleGenerativeAI(
     max_output_tokens=800,
 )
 # Importing the dataset from MIR md
-# dataset = pd.read_excel('data/MIR24GPT.xlsx')
+# dataset = pd.read_excel('data/24/MIR24GPT.xlsx')
 
-dataset2025 = pd.read_excel('data/MIR25_answered_20250128.xlsx', sheet_name='Sheet1')
+dataset2025 = pd.read_excel('data/25/MIR25_answered_20250128.xlsx', sheet_name='Sheet1')
 print(dataset2025.columns)
 # In col, GPT-4, save the answers from GPT-4
 PROMPT_TEMPLATE = "Behave like a hypotethical doctor who has to answer the following question. You have to indicate only a number 1-4 with the correct answer. Don't output anything different than 1-4 please. The question is \n:{description}"
@@ -84,5 +84,5 @@ for index, row in tqdm(dataset2025.iterrows(), total=dataset2025.shape[0]):
     # dataset2025.iloc[index, 4] = diagnosis_c35
 
 # Save the diagnoses to a new XLSX file
-dataset2025.to_excel('data/MIR25_answered_20250128.xlsx', index=False)
+dataset2025.to_excel('data/25/MIR25_answered_20250128.xlsx', index=False)
 

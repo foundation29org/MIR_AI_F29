@@ -11,7 +11,7 @@ import os
 import glob
 
 # Configuración
-pdf_path = "data/MIR26_final.pdf"  # PDF final oficial
+pdf_path = "data/26/MIR26_final.pdf"  # PDF final oficial
 out_dir = "images/26"
 
 # Página inicial (las imágenes del examen empiezan en la página 3)

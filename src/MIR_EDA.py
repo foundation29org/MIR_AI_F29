@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Importing the dataset from MIR md
-dataset = pd.read_excel('data/MIR24GPT_final.xlsx')
+dataset = pd.read_excel('data/24/MIR24GPT_final.xlsx')
 
 # head
 print(dataset.head())
@@ -35,7 +35,7 @@ sns.countplot(y='Especialidad', data=dataset_from_25, order = dataset_from_25['E
 ax.set_title('Distribución de Especialidades (Sin Preguntas de Imágenes)')
 ax.set_xlabel('Count')
 ax.set_ylabel('Specialty')
-fig.savefig('data/specialties_distribution_no_images.png', dpi=300)
+fig.savefig('data/24/specialties_distribution_no_images.png', dpi=300)
 
 # Now for this same distribution take the columns 5 and 6 (Correcta Ministerio y GPT-4) and calculate the accuracy of GPT-4
 correct_answers = dataset_from_25.iloc[:, 4].values.astype(int)
@@ -72,7 +72,7 @@ ax.set_xlabel('Especialidad')
 ax.set_ylabel('Precisión (%)')
 plt.xticks(rotation=45)
 fig.tight_layout()
-fig.savefig('data/gpt4_accuracy_by_specialty.png', dpi=300)
+fig.savefig('data/24/gpt4_accuracy_by_specialty.png', dpi=300)
 
 # Print the accuracy for each category in percentage
 print("\nAccuracy of GPT-4 by Specialty (%):")
@@ -81,7 +81,7 @@ print(category_accuracy_percentage)
 # Now we will do a analysis of the answers of GPT-4 Vision for the rows 0-25.
 # We will do a distribution of categories and each accuracy for each category. We will do this for the rows 0-25.
 
-dataset_img = pd.read_excel('data/MIR24GPT_vision_answered_v2.xlsx')
+dataset_img = pd.read_excel('data/24/MIR24GPT_vision_answered_v2.xlsx')
 dataset_img = dataset_img.iloc[:25]
 
 # Calculate the accuracy of GPT-4 Vision vs GPT-4 vs Correcta Ministerio.
@@ -109,7 +109,7 @@ ax.set_title('Precisión de GPT-4 vs GPT-4 Vision')
 ax.set_xlabel('Modelo')
 ax.set_ylabel('Precisión (%)')
 fig.tight_layout()
-fig.savefig('data/gpt4_vs_gpt4_vision.png', dpi=300)
+fig.savefig('data/24/gpt4_vs_gpt4_vision.png', dpi=300)
 
 # Now we will do a distribution of categories and each accuracy for each category. Combining GPT-4 and GPT-4 Vision.
 # Merge general dataset from 25 onwards with the dataset with images from 0-25
@@ -144,4 +144,4 @@ ax.set_xlabel('Especialidad')
 ax.set_ylabel('Precisión (%)')
 plt.xticks(rotation=45)
 fig.tight_layout()
-fig.savefig('data/complete_gpt4_accuracy_by_specialty.png', dpi=300)
+fig.savefig('data/24/complete_gpt4_accuracy_by_specialty.png', dpi=300)

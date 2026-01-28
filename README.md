@@ -36,11 +36,11 @@ Aquí adjuntamos dos gráficos, con y sin imágenes, que muestran la precisión 
 
 ### Gráficos de Precisión de GPT-4 (2024)
 
-![Gráfico de Precisión de GPT-4](data/gpt4_accuracy_by_specialty.png)
+![Gráfico de Precisión de GPT-4](data/24/gpt4_accuracy_by_specialty.png)
 
 ### Gráficos de Precisión de GPT-4 con imágenes (2024)
 
-![Gráfico de Precisión de GPT-4 con imágenes](data/complete_gpt4_accuracy_by_specialty.png)
+![Gráfico de Precisión de GPT-4 con imágenes](data/24/complete_gpt4_accuracy_by_specialty.png)
 
 
 ### Examen MIR 2025 - Resultados con o1 Pro
@@ -55,19 +55,19 @@ Para el examen MIR 2025, utilizamos distintos modelos y por ejemplo para el caso
 
 #### Precisión de o1 Pro por especialidad (2025)
 
-![Gráfico de Precisión de o1 Pro (2025)](data/especialidad_2025.png)
+![Gráfico de Precisión de o1 Pro (2025)](data/25/especialidad_2025.png)
 
 ### Comparativa de modelos de IA en el MIR 2025
 
 Realizamos una comparativa entre diferentes modelos de IA para evaluar su rendimiento en las 200 preguntas del examen MIR 2025. Los resultados muestran que los modelos más avanzados como o3 (94,3%) y o1 (92,9%) obtuvieron las tasas de acierto más altas, seguidos por o1 Pro (91,9%) y Claude 3.5 Sonnet (88,6%). Esta comparativa demuestra el potencial de los modelos multimodales de última generación para asistir en la preparación y evaluación de exámenes médicos.
 
-![Tasa de acierto en las 200 preguntas del MIR 2025](data/MIR_2025.jpeg)
+![Tasa de acierto en las 200 preguntas del MIR 2025](data/25/MIR_2025.jpeg)
 
 ### Análisis de concurrencia entre modelos
 
 Para profundizar en nuestro análisis, creamos un heatmap de concurrencia con dendrograma que muestra la similitud en las respuestas entre los diferentes modelos evaluados. Los valores más altos (en rojo) indican mayor coincidencia en las respuestas, mientras que los valores más bajos (en azul) indican mayor divergencia.
 
-![Heatmap de concurrencia entre modelos](data/concurrencia_modelos_2025.png)
+![Heatmap de concurrencia entre modelos](data/25/concurrencia_modelos_2025.png)
 
 Este análisis revela patrones interesantes:
 
@@ -83,7 +83,7 @@ Esta diversidad en las respuestas sugiere que diferentes modelos tienen distinta
 
 Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de IA de última generación, incluyendo las nuevas versiones de GPT-5, Claude 4.5, Gemini 3 y DeepSeek.
 
-> 📊 **Ver resultados detallados**: [results/mir26.md](results/mir26.md) (incluye preguntas falladas por modelo, análisis por especialidad y más)
+> 📊 **Ver resultados detallados**: [results/26/mir26.md](results/26/mir26.md) (incluye preguntas falladas por modelo, análisis por especialidad y más)
 
 #### Ranking Final MIR 2026
 
@@ -100,7 +100,7 @@ Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de 
 
 #### Comparativa de Modelos (2026)
 
-![Comparativa de modelos MIR 2026](results/charts/models_comparison.png)
+![Comparativa de modelos MIR 2026](results/26/charts/models_comparison.png)
 
 #### Rendimiento en Preguntas con Imágenes vs Sin Imágenes
 
@@ -117,21 +117,21 @@ Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de 
 
 #### Precisión por Especialidad - GPT-5.2 (Mejor modelo)
 
-![Precisión de GPT-5.2 por especialidad](results/charts/gpt52_by_specialty.png)
+![Precisión de GPT-5.2 por especialidad](results/26/charts/gpt52_by_specialty.png)
 
 #### Rendimiento en Preguntas con Imagen vs Sin Imagen
 
-![Comparativa con/sin imagen](results/charts/image_vs_text_comparison.png)
+![Comparativa con/sin imagen](results/26/charts/image_vs_text_comparison.png)
 
 #### Concordancia entre Modelos
 
 El heatmap muestra la proporción de respuestas coincidentes entre cada par de modelos:
 
-![Heatmap de concordancia entre modelos](results/charts/model_concordance_heatmap.png)
+![Heatmap de concordancia entre modelos](results/26/charts/model_concordance_heatmap.png)
 
 #### Distribución de Preguntas por Especialidad
 
-![Distribución por especialidad](results/charts/specialty_distribution.png)
+![Distribución por especialidad](results/26/charts/specialty_distribution.png)
 
 #### Observaciones Clave del MIR 2026
 

@@ -1,6 +1,6 @@
 /**
  * Script para comparar resultados de los modelos con las respuestas oficiales
- * Los resultados se guardan en results/mir26.md (NO modifica el Excel)
+ * Los resultados se guardan en results/26/mir26.md (NO modifica el Excel)
  */
 
 const xlsx = require('xlsx');
@@ -9,7 +9,7 @@ const path = require('path');
 
 function main() {
   // Leer correcciones oficiales
-  const wbCorr = xlsx.readFile(path.join(__dirname, '..', 'data', 'Excel MIR 2026.xlsx'));
+  const wbCorr = xlsx.readFile(path.join(__dirname, '..', 'data', '26', 'Excel MIR 2026.xlsx'));
   const sheetCorr = wbCorr.Sheets['Hoja 1'];
 
   // Extraer respuestas correctas (PREGUNTA -> RESPUESTA)
@@ -156,7 +156,7 @@ function main() {
   }
 
   // Guardar en archivo markdown
-  const resultsPath = path.join(__dirname, '..', 'results', 'mir26.md');
+  const resultsPath = path.join(__dirname, '..', 'results/26/mir26.md');
   fs.writeFileSync(resultsPath, output);
 
   // Mostrar en consola (formato simplificado)
@@ -219,7 +219,7 @@ function main() {
   });
   console.log('');
 
-  console.log(`✅ Resultados guardados en: results/mir26.md\n`);
+  console.log(`✅ Resultados guardados en: results/26/mir26.md`);
   console.log(`ℹ️  El Excel NO ha sido modificado\n`);
 }
 

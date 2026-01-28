@@ -66,11 +66,11 @@ def load_data():
     """Carga y combina los datos del Excel oficial con los resultados de los modelos."""
     
     # Cargar Excel oficial con especialidades
-    oficial_path = 'data/Excel MIR 2026.xlsx'
+    oficial_path = 'data/26/Excel MIR 2026.xlsx'
     df_oficial = pd.read_excel(oficial_path)
     
     # Cargar resultados de modelos
-    results_path = 'data/MIR26.xlsx'
+    results_path = 'data/26/MIR26.xlsx'
     df_results = pd.read_excel(results_path)
     
     print(f"Excel oficial: {len(df_oficial)} filas")
@@ -139,7 +139,7 @@ def calculate_accuracy_by_specialty(df, answer_col):
     
     return pd.DataFrame(results)
 
-def plot_accuracy_by_specialty(df, model_name, output_dir='results/charts'):
+def plot_accuracy_by_specialty(df, model_name, output_dir='results/26/charts'):
     """Genera gráfica de precisión por especialidad para un modelo."""
     
     os.makedirs(output_dir, exist_ok=True)
@@ -175,7 +175,7 @@ def plot_accuracy_by_specialty(df, model_name, output_dir='results/charts'):
     
     return output_path
 
-def plot_all_models_comparison(all_results, output_dir='results/charts'):
+def plot_all_models_comparison(all_results, output_dir='results/26/charts'):
     """Genera gráfica comparativa de todos los modelos."""
     
     os.makedirs(output_dir, exist_ok=True)
@@ -222,7 +222,7 @@ def plot_all_models_comparison(all_results, output_dir='results/charts'):
     
     return output_path
 
-def plot_image_vs_text_comparison(df, answer_cols, output_dir='results/charts'):
+def plot_image_vs_text_comparison(df, answer_cols, output_dir='results/26/charts'):
     """Genera gráfica comparativa de rendimiento con/sin imagen."""
     
     os.makedirs(output_dir, exist_ok=True)
@@ -302,7 +302,7 @@ def plot_image_vs_text_comparison(df, answer_cols, output_dir='results/charts'):
     return output_path
 
 
-def plot_model_correlation_heatmap(df, answer_cols, output_dir='results/charts'):
+def plot_model_correlation_heatmap(df, answer_cols, output_dir='results/26/charts'):
     """Genera heatmap de correlación/concordancia entre modelos."""
     
     os.makedirs(output_dir, exist_ok=True)
@@ -347,7 +347,7 @@ def plot_model_correlation_heatmap(df, answer_cols, output_dir='results/charts')
     return output_path
 
 
-def plot_specialty_distribution(df, output_dir='results/charts'):
+def plot_specialty_distribution(df, output_dir='results/26/charts'):
     """Genera gráfica de distribución de preguntas por especialidad."""
     
     os.makedirs(output_dir, exist_ok=True)
@@ -427,7 +427,7 @@ def main():
     plot_specialty_distribution(df)
     
     print("\n" + "="*60)
-    print("Análisis completado. Gráficas guardadas en results/charts/")
+    print("Análisis completado. Gráficas guardadas en results/26/charts/")
     print("="*60)
 
 if __name__ == '__main__':

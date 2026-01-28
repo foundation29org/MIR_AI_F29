@@ -46,7 +46,7 @@ model = genai.GenerativeModel(
 )
 
 # Cargar el dataset
-dataset2025 = pd.read_excel('data/MIR25_answered_20250128.xlsx', sheet_name='Sheet1')
+dataset2025 = pd.read_excel('data/25/MIR25_answered_20250128.xlsx', sheet_name='Sheet1')
 print(dataset2025.columns)
 
 PROMPT_TEMPLATE = """Behave like a hypotethical doctor who has to answer the following question. You have to indicate only a number 1-4 with the correct answer. Don't output anything different than 1-4 please. The question is:
@@ -80,5 +80,5 @@ for index, row in tqdm(dataset2025.iterrows(), total=dataset2025.shape[0]):
         time.sleep(2)  # espera 2 segundos entre peticiones
 
 # Save the diagnoses to a new XLSX file
-dataset2025.to_excel('data/MIR25_answered_20250128.xlsx', index=False)
+dataset2025.to_excel('data/25/MIR25_answered_20250128.xlsx', index=False)
 

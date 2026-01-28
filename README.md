@@ -89,13 +89,13 @@ Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de 
 
 | Posición | Modelo | Precisión |
 |----------|--------|-----------|
+| 1 | **o3** | 97.14% |
 | 1 | **GPT-5.2** | 97.14% |
-| 2 | **o3** | 95.71% |
-| 3 | **GPT-5-mini** | 94.76% |
-| 4 | **DeepSeek-R1** | 93.33% |
-| 5 | **Gemini 3 Pro** | 92.38% |
-| 6 | **Claude Opus 4.5** | 91.43% |
-| 7 | **Claude Sonnet 4.5** | 90.95% |
+| 3 | **GPT-5-mini** | 96.67% |
+| 4 | **DeepSeek-R1** | 94.29% |
+| 5 | **Gemini 3 Pro** | 91.90% |
+| 5 | **Claude Sonnet 4.5** | 91.90% |
+| 7 | **Claude Opus 4.5** | 90.95% |
 | 8 | **DeepSeek V3.2** | 70.00% |
 
 #### Comparativa de Modelos (2026)
@@ -107,12 +107,12 @@ Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de 
 | Modelo | Con Imagen (25) | Sin Imagen (185) |
 |--------|-----------------|------------------|
 | GPT-5.2 | 96.0% | 97.3% |
-| o3 | 92.0% | 96.2% |
-| GPT-5-mini | 92.0% | 95.1% |
-| DeepSeek-R1 | 88.0% | 94.1% |
-| Gemini 3 Pro | 64.0% | 96.2% |
-| Claude Opus 4.5 | 52.0% | 96.8% |
-| Claude Sonnet 4.5 | 60.0% | 95.1% |
+| o3 | 92.0% | 97.8% |
+| GPT-5-mini | 92.0% | 97.3% |
+| DeepSeek-R1 | 88.0% | 95.1% |
+| Gemini 3 Pro | 64.0% | 95.7% |
+| Claude Sonnet 4.5 | 60.0% | 96.2% |
+| Claude Opus 4.5 | 52.0% | 96.2% |
 | DeepSeek V3.2 | 28.0% | 75.7% |
 
 #### Precisión por Especialidad - GPT-5.2 (Mejor modelo)
@@ -135,11 +135,11 @@ El heatmap muestra la proporción de respuestas coincidentes entre cada par de m
 
 #### Observaciones Clave del MIR 2026
 
-1. **GPT-5.2 lidera** con 97.14%, siendo el mejor tanto en preguntas con imagen (96%) como sin imagen (97.3%)
-2. **DeepSeek-R1** (modelo de razonamiento) supera a modelos más establecidos como Gemini y Claude
+1. **o3 y GPT-5.2 empatan en el liderato** con 97.14% (204/210 aciertos cada uno)
+2. **DeepSeek-R1** (modelo de razonamiento) alcanza 94.29%, superando a Gemini y Claude
 3. **Gran disparidad en imágenes médicas**: GPT-5.2 (96%) vs DeepSeek V3.2 (28%)
-4. **Claude Opus 4.5** tiene excelente rendimiento en texto (96.8%) pero el peor en imágenes (52%)
-5. **3 preguntas falladas por TODOS los modelos** (3, 122, 139), posiblemente impugnables
+4. **Claude Opus 4.5** tiene buen rendimiento en texto (96.2%) pero bajo en imágenes (52%)
+5. **3 preguntas falladas por TODOS los modelos** (3, 77, 197), posiblemente impugnables
 6. **Cardiología** es la especialidad con más preguntas (21), seguida de Digestivo (17) y Ginecología (15)
 
 ---
@@ -151,7 +151,7 @@ Al comparar los resultados obtenidos en los exámenes MIR de 2024, 2025 y 2026, 
 #### Evolución de la precisión máxima:
 - **MIR 2024**: GPT-4 logró 87.14%
 - **MIR 2025**: o3 alcanzó 94.3%
-- **MIR 2026**: GPT-5.2 alcanzó **97.14%**
+- **MIR 2026**: o3 y GPT-5.2 alcanzaron **97.14%**
 
 #### Mejora en preguntas con imágenes:
 - **MIR 2024**: GPT-4 Vision logró una precisión del 76% en preguntas con imágenes
@@ -166,7 +166,7 @@ Esta evolución demuestra el rápido avance de los modelos multimodales. En solo
 |-----|--------------|-------------------|-------------------|
 | 2024 | GPT-4 | 87.14% | 76% |
 | 2025 | o3 | 94.3% | 92% |
-| 2026 | GPT-5.2 | **97.14%** | **96%** |
+| 2026 | o3 / GPT-5.2 | **97.14%** | **96%** |
 
 Estos resultados confirman que los modelos de IA están alcanzando niveles de excelencia en pruebas médicas estandarizadas, superando consistentemente el umbral del 90% que típicamente se considera "nivel experto".
 

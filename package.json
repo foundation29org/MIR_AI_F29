@@ -39,5 +39,8 @@
     "dotenv": "^16.4.0",
     "openai": "^6.16.0",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "pdf-parse": "^2.4.5"
   }
 }

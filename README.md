@@ -136,11 +136,12 @@ El heatmap muestra la proporción de respuestas coincidentes entre cada par de m
 #### Observaciones Clave del MIR 2026
 
 1. **o3 y GPT-5.2 empatan en el liderato** con 97.14% (204/210 aciertos cada uno)
-2. **DeepSeek-R1** (modelo de razonamiento) alcanza 94.29%, superando a Gemini y Claude
-3. **Gran disparidad en imágenes médicas**: GPT-5.2 (96%) vs DeepSeek V3.2 (28%)
-4. **Claude Opus 4.5** tiene buen rendimiento en texto (96.2%) pero bajo en imágenes (52%)
-5. **3 preguntas falladas por TODOS los modelos** (3, 77, 197), posiblemente impugnables
-6. **Cardiología** es la especialidad con más preguntas (21), seguida de Digestivo (17) y Ginecología (15)
+2. **o3 lidera en preguntas sin imagen** con 97.8% (181/185), mientras GPT-5.2 lidera en imágenes con 96%
+3. **DeepSeek-R1** (modelo de razonamiento) alcanza 94.29%, superando a Gemini y Claude
+4. **Gran disparidad en imágenes médicas**: GPT-5.2 (96%) vs DeepSeek V3.2 (28%)
+5. **Claude Opus 4.5** tiene buen rendimiento en texto (96.2%) pero bajo en imágenes (52%)
+6. **3 preguntas falladas por TODOS los modelos** (3, 77, 197), posiblemente impugnables
+7. **Cardiología** es la especialidad con más preguntas (21), seguida de Digestivo (17) y Ginecología (15)
 
 ---
 

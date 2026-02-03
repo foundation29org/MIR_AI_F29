@@ -92,11 +92,12 @@ Para el examen MIR 2026, realizamos una evaluación exhaustiva con 8 modelos de 
 | 1 | **o3** | 97.14% |
 | 1 | **GPT-5.2** | 97.14% |
 | 3 | **GPT-5-mini** | 96.67% |
-| 4 | **DeepSeek-R1** | 94.29% |
-| 5 | **Gemini 3 Pro** | 91.90% |
-| 5 | **Claude Sonnet 4.5** | 91.90% |
-| 7 | **Claude Opus 4.5** | 90.95% |
-| 8 | **DeepSeek V3.2** | 70.00% |
+| 3 | **OpenEvidence** | 96.67% |
+| 5 | **DeepSeek-R1** | 94.29% |
+| 6 | **Gemini 3 Pro** | 91.90% |
+| 6 | **Claude Sonnet 4.5** | 91.90% |
+| 8 | **Claude Opus 4.5** | 90.95% |
+| 9 | **DeepSeek V3.2** | 70.00% |
 
 #### Comparativa de Modelos (2026)
 

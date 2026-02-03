@@ -8,6 +8,23 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+# Mapeo de nombres internos de modelos a nombres para mostrar
+MODEL_DISPLAY_NAMES = {
+    'OE': 'OpenEvidence',
+    'gpt52': 'GPT-5.2',
+    'gpt5mini': 'GPT-5-mini',
+    'o3': 'o3',
+    'gemini3pro': 'Gemini 3 Pro',
+    'claude45sonnet': 'Claude 4.5 Sonnet',
+    'claude45opus': 'Claude 4.5 Opus',
+    'deepseek': 'DeepSeek V3.2',
+    'deepseekr1': 'DeepSeek-R1',
+}
+
+def get_display_name(model_name):
+    """Obtiene el nombre para mostrar de un modelo."""
+    return MODEL_DISPLAY_NAMES.get(model_name, model_name)
+
 # Mapeo de abreviaturas a nombres completos de especialidades
 SPECIALTY_MAP = {
     # Especialidades médicas principales
@@ -162,7 +179,8 @@ def plot_accuracy_by_specialty(df, model_name, output_dir='results/26/charts'):
                 va='center', fontsize=9)
     
     ax.set_xlabel('Precisión (%)')
-    ax.set_title(f'Precisión de {model_name} por Especialidad (MIR 2026)')
+    display_name = get_display_name(model_name)
+    ax.set_title(f'Precisión de {display_name} por Especialidad (MIR 2026)')
     ax.set_xlim(0, 110)
     
     plt.tight_layout()
@@ -187,7 +205,7 @@ def plot_all_models_comparison(all_results, output_dir='results/26/charts'):
         total_questions = df['Total'].sum()
         accuracy = total_correct / total_questions * 100
         summary.append({
-            'Modelo': model_name,
+            'Modelo': get_display_name(model_name),
             'Precisión': accuracy,
             'Aciertos': total_correct,
             'Total': total_questions
@@ -256,7 +274,7 @@ def plot_image_vs_text_comparison(df, answer_cols, output_dir='results/26/charts
             acc_no_img = 0
         
         results.append({
-            'Modelo': model_name,
+            'Modelo': get_display_name(model_name),
             'Con Imagen': acc_img,
             'Sin Imagen': acc_no_img
         })
@@ -308,7 +326,7 @@ def plot_model_correlation_heatmap(df, answer_cols, output_dir='results/26/chart
     os.makedirs(output_dir, exist_ok=True)
     
     # Crear matriz de concordancia
-    model_names = [col.replace('answer_', '') for col in answer_cols]
+    model_names = [get_display_name(col.replace('answer_', '')) for col in answer_cols]
     n_models = len(model_names)
     concordance = pd.DataFrame(index=model_names, columns=model_names, dtype=float)
     

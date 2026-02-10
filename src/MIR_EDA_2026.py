@@ -115,8 +115,16 @@ def load_data():
     
     # Normalizar respuesta correcta (convertir 1.0 -> "1")
     df_merged['correct_answer'] = df_merged['RESPUESTA'].apply(
-        lambda x: str(int(x)) if pd.notna(x) and str(x).replace('.0', '').isdigit() else str(x)
+        lambda x: str(int(x)) if pd.notna(x) and str(x).replace('.0', '').isdigit() else str(x) if pd.notna(x) else ''
     )
+    
+    # Filtrar preguntas anuladas (sin respuesta correcta)
+    anuladas = df_merged[df_merged['correct_answer'] == '']['qnum'].tolist()
+    if len(anuladas) > 0:
+        print(f"\nPreguntas anuladas (excluidas): {anuladas}")
+    df_merged = df_merged[df_merged['correct_answer'] != '']
+    
+    print(f"Preguntas válidas después de filtrar anuladas: {len(df_merged)}")
     
     return df_merged
 

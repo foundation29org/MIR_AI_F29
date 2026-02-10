@@ -48,10 +48,17 @@ function main() {
   });
 
   // Comparar respuestas
+  const anuladas = [];
   for (let i = 0; i < data.length; i++) {
     const qnum = String(data[i].qnum || (i + 1));
     const correctAnswer = correctas[qnum];
     const hasImage = data[i].image_refs && data[i].image_refs !== '';
+
+    // Saltar preguntas anuladas (sin respuesta correcta)
+    if (!correctAnswer || correctAnswer === '') {
+      anuladas.push(qnum);
+      continue;
+    }
 
     // Comparar cada modelo
     answerColumns.forEach(col => {
@@ -69,6 +76,10 @@ function main() {
         stats[col].errors++;
       }
     });
+  }
+  
+  if (anuladas.length > 0) {
+    console.log(`⚠️  Preguntas anuladas (no contabilizadas): ${anuladas.join(', ')}\n`);
   }
 
   // Construir output para consola y archivo
@@ -127,6 +138,11 @@ function main() {
     const qnum = String(data[i].qnum || (i + 1));
     const correctAnswer = correctas[qnum];
     
+    // Saltar preguntas anuladas
+    if (!correctAnswer || correctAnswer === '') {
+      continue;
+    }
+    
     answerColumns.forEach(col => {
       const modelAnswer = String(data[i][col] || '');
       if (modelAnswer && modelAnswer !== 'ERROR' && modelAnswer !== '' && modelAnswer !== correctAnswer) {
@@ -154,6 +170,70 @@ function main() {
     output += `## Preguntas Falladas por TODOS los Modelos\n\n`;
     output += `${[...allFailed].sort((a, b) => parseInt(a) - parseInt(b)).join(', ')}\n\n`;
   }
+
+  // Añadir sección de gráficas
+  output += `
+---
+
+## Gráficas
+
+### Comparativa de Modelos
+
+![Comparativa de modelos](charts/models_comparison.png)
+
+### Rendimiento: Con Imagen vs Sin Imagen
+
+![Comparativa con/sin imagen](charts/image_vs_text_comparison.png)
+
+### Concordancia entre Modelos
+
+![Heatmap de concordancia](charts/model_concordance_heatmap.png)
+
+### Distribución de Preguntas por Especialidad
+
+![Distribución por especialidad](charts/specialty_distribution.png)
+
+---
+
+### Precisión por Especialidad - Por Modelo
+
+#### o3
+
+![o3 por especialidad](charts/o3_by_specialty.png)
+
+#### GPT-5.2
+
+![GPT-5.2 por especialidad](charts/gpt52_by_specialty.png)
+
+#### GPT-5-mini
+
+![GPT-5-mini por especialidad](charts/gpt5mini_by_specialty.png)
+
+#### DeepSeek-R1
+
+![DeepSeek-R1 por especialidad](charts/deepseekr1_by_specialty.png)
+
+#### Gemini 3 Pro
+
+![Gemini 3 Pro por especialidad](charts/gemini3pro_by_specialty.png)
+
+#### Claude 4.5 Sonnet
+
+![Claude 4.5 Sonnet por especialidad](charts/claude45sonnet_by_specialty.png)
+
+#### Claude 4.5 Opus
+
+![Claude 4.5 Opus por especialidad](charts/claude45opus_by_specialty.png)
+
+#### DeepSeek V3.2
+
+![DeepSeek por especialidad](charts/deepseek_by_specialty.png)
+
+#### Open Evidence
+
+![Open Evidence por especialidad](charts/OE_by_specialty.png)
+
+`;
 
   // Guardar en archivo markdown
   const resultsPath = path.join(__dirname, '..', 'results/26/mir26.md');

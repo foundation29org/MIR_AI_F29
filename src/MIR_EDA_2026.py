@@ -265,6 +265,60 @@ def plot_all_models_comparison(all_results, output_dir='results/26/charts'):
     
     return output_path
 
+def plot_all_models_comparison_200(all_results, output_dir='results/26/charts'):
+    """Genera gráfica comparativa en aciertos sobre 200 preguntas finales (equivalente)."""
+    
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Escala: modelos evaluados en 203, equivalentes a 200
+    ESCALA_200 = 200 / 203
+    
+    summary = []
+    for model_name, df in all_results.items():
+        total_correct = df['Aciertos'].sum()
+        equiv_200 = round(total_correct * ESCALA_200)
+        summary.append({
+            'Modelo': get_display_name(model_name),
+            'Aciertos_200': equiv_200,
+            'is_estudiante': False
+        })
+    
+    summary.append({
+        'Modelo': 'Mejor Estudiante',
+        'Aciertos_200': MEJOR_ESTUDIANTE_ACIERTOS,
+        'is_estudiante': True
+    })
+    
+    df_summary = pd.DataFrame(summary).sort_values('Aciertos_200', ascending=True)
+    
+    colors = sns.color_palette('viridis', len(df_summary))
+    colors = ['#6B7280' if row['is_estudiante'] else colors[i] 
+              for i, (_, row) in enumerate(df_summary.iterrows())]
+    
+    fig, ax = plt.subplots(figsize=(10, 8), dpi=150)
+    bars = ax.barh(df_summary['Modelo'], df_summary['Aciertos_200'], color=colors)
+    
+    for bar, (_, row) in zip(bars, df_summary.iterrows()):
+        width = bar.get_width()
+        ax.text(width + 1, bar.get_y() + bar.get_height()/2, 
+                f'{int(row["Aciertos_200"])}/200',
+                va='center', fontsize=10, fontweight='bold')
+    
+    ax.set_xlabel('Aciertos (de 200 preguntas finales)')
+    ax.set_title('Comparación de Modelos - MIR 2026')
+    ax.set_xlim(0, 210)
+    ax.axvline(x=200, color='gray', linestyle='--', alpha=0.5)
+    
+    plt.tight_layout()
+    
+    output_path = os.path.join(output_dir, 'models_comparison_200.png')
+    fig.savefig(output_path, dpi=150, bbox_inches='tight')
+    plt.close()
+    
+    print(f"Gráfica comparativa (200 preg.) guardada: {output_path}")
+    
+    return output_path
+
 def plot_image_vs_text_comparison(df, answer_cols, output_dir='results/26/charts'):
     """Genera gráfica comparativa de rendimiento con/sin imagen."""
     
@@ -462,6 +516,7 @@ def main():
     # Gráfica comparativa
     if len(all_results) > 1:
         plot_all_models_comparison(all_results)
+        plot_all_models_comparison_200(all_results)
     
     # Gráficas adicionales
     print("\nGenerando gráficas adicionales...")

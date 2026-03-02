@@ -201,6 +201,10 @@ def plot_accuracy_by_specialty(df, model_name, output_dir='results/26/charts'):
     
     return output_path
 
+# Mejor estudiante oficial MIR 2026 (188/200 preguntas)
+MEJOR_ESTUDIANTE_ACIERTOS = 188
+MEJOR_ESTUDIANTE_TOTAL = 200
+
 def plot_all_models_comparison(all_results, output_dir='results/26/charts'):
     """Genera gráfica comparativa de todos los modelos."""
     
@@ -216,13 +220,26 @@ def plot_all_models_comparison(all_results, output_dir='results/26/charts'):
             'Modelo': get_display_name(model_name),
             'Precisión': accuracy,
             'Aciertos': total_correct,
-            'Total': total_questions
+            'Total': total_questions,
+            'is_estudiante': False
         })
+    
+    # Añadir mejor estudiante oficial
+    estudiante_accuracy = MEJOR_ESTUDIANTE_ACIERTOS / MEJOR_ESTUDIANTE_TOTAL * 100
+    summary.append({
+        'Modelo': 'Mejor Estudiante',
+        'Precisión': estudiante_accuracy,
+        'Aciertos': MEJOR_ESTUDIANTE_ACIERTOS,
+        'Total': MEJOR_ESTUDIANTE_TOTAL,
+        'is_estudiante': True
+    })
     
     df_summary = pd.DataFrame(summary).sort_values('Precisión', ascending=True)
     
-    # Crear gráfica
+    # Crear gráfica - viridis para modelos, gris para la estudiante (referencia humana)
     colors = sns.color_palette('viridis', len(df_summary))
+    colors = ['#6B7280' if row['is_estudiante'] else colors[i] 
+              for i, (_, row) in enumerate(df_summary.iterrows())]
     
     fig, ax = plt.subplots(figsize=(10, 8), dpi=150)
     
